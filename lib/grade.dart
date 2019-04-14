@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'customRadio.dart';
+import 'dart:math';
 
 class Grade extends StatefulWidget {
   Grade({Key key}) : super(key: key);
@@ -10,6 +11,58 @@ class Grade extends StatefulWidget {
 
 class _GradeState extends State<Grade> {
   String type = 'French';
+  double _ang;
+  
+  @override
+  void initState() {
+    super.initState();
+    _ang = 1;
+  }
+
+  _createKnob() {
+    return GestureDetector(
+      onHorizontalDragUpdate: (DragUpdateDetails details) {
+        setState(() {
+          _ang = atan2(details.globalPosition.dy - 672 / 2,
+                  details.globalPosition.dx - 360 / 2) +
+              pi / 2;
+        });
+      },
+      child: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+                color: Color(0xff29000000),
+                blurRadius: 4.0,
+                spreadRadius: 2.5,
+                offset: Offset(0.0, 2.0)),
+          ],
+          color: Colors.white,
+          shape: BoxShape.circle,
+        ),
+        child: Center(
+          child: Container(
+            width: 25,
+            height: 25,
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Color(0xff29000000),
+                  blurRadius: 2.0,
+                  spreadRadius: 2.0,
+                  offset: Offset(0.0, 1.0),
+                ),
+              ],
+              color: Colors.white,
+              shape: BoxShape.circle,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
   _buildGradeModal() {
     return Column(
@@ -71,137 +124,27 @@ class _GradeState extends State<Grade> {
               const EdgeInsets.only(top: 30.0, bottom: 30, left: 30, right: 30),
           child: AspectRatio(
             aspectRatio: 1,
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.all(15),
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Text(
-                          '+',
-                          style: TextStyle(
-                            color: Color(0xff4c000000),
-                            fontSize: 60,
-                            shadows: <Shadow>[
-                              Shadow(
-                                offset: Offset(1.0, 2.0),
-                                blurRadius: 3.0,
-                                color: Color(0xff29000000),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Text(
-                          '6a+',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 40,
-                            shadows: <Shadow>[
-                              Shadow(
-                                offset: Offset(1.0, 2.0),
-                                blurRadius: 3.0,
-                                color: Color(0xff29000000),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Text(
-                          '-',
-                          style: TextStyle(
-                            color: Color(0xff4c000000),
-                            fontSize: 100,
-                            shadows: <Shadow>[
-                              Shadow(
-                                offset: Offset(1.0, 2.0),
-                                blurRadius: 3.0,
-                                color: Color(0xff29000000),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: Color(0xff2e707070),
-                      width: 8.0,
-                    ),
-                  ),
-                ),
-                Draggable(
-                  childWhenDragging: Container(),
-                  feedback: Container(
-                    width: 40,
-                    height: 40,
+            child: Transform.rotate(
+              angle: _ang,
+              child: Stack(
+                alignment: Alignment.topCenter,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.all(15),
+                    child: Center(),
                     decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                            color: Color(0xff29000000),
-                            blurRadius: 4.0,
-                            spreadRadius: 2.5,
-                            offset: Offset(0.0, 2.0)),
-                      ],
-                      color: Colors.white,
                       shape: BoxShape.circle,
-                    ),
-                    child: Center(
-                      child: Container(
-                        width: 25,
-                        height: 25,
-                        decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color(0xff29000000),
-                              blurRadius: 2.0,
-                              spreadRadius: 2.0,
-                              offset: Offset(0.0, 1.0),
-                            ),
-                          ],
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                        ),
+                      border: Border.all(
+                        color: Color(0xff2e707070),
+                        width: 8.0,
                       ),
                     ),
                   ),
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                            color: Color(0xff29000000),
-                            blurRadius: 4.0,
-                            spreadRadius: 2.5,
-                            offset: Offset(0.0, 2.0)),
-                      ],
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Center(
-                      child: Container(
-                        width: 25,
-                        height: 25,
-                        decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color(0xff29000000),
-                              blurRadius: 2.0,
-                              spreadRadius: 2.0,
-                              offset: Offset(0.0, 1.0),
-                            ),
-                          ],
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+                  Positioned(
+                    child: _createKnob(),
+                  )
+                ],
+              ),
             ),
           ),
         )
@@ -213,4 +156,68 @@ class _GradeState extends State<Grade> {
   Widget build(BuildContext context) {
     return _buildGradeModal();
   }
+}
+
+class KnobPainter extends CustomPainter {
+  Paint _paint = Paint()..color = Colors.white;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    canvas.drawCircle(Offset(size.width / 2, 20), 20.0, _paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return false;
+  }
+}
+
+_createControle() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: <Widget>[
+      Text(
+        '+',
+        style: TextStyle(
+          color: Color(0xff4c000000),
+          fontSize: 60,
+          shadows: <Shadow>[
+            Shadow(
+              offset: Offset(1.0, 2.0),
+              blurRadius: 3.0,
+              color: Color(0xff29000000),
+            ),
+          ],
+        ),
+      ),
+      Text(
+        '6a+',
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 40,
+          shadows: <Shadow>[
+            Shadow(
+              offset: Offset(1.0, 2.0),
+              blurRadius: 3.0,
+              color: Color(0xff29000000),
+            ),
+          ],
+        ),
+      ),
+      Text(
+        '-',
+        style: TextStyle(
+          color: Color(0xff4c000000),
+          fontSize: 100,
+          shadows: <Shadow>[
+            Shadow(
+              offset: Offset(1.0, 2.0),
+              blurRadius: 3.0,
+              color: Color(0xff29000000),
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
 }
