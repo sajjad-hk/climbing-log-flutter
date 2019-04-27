@@ -17,6 +17,7 @@ class _TagsState extends State<Tags> {
 
   @override
   void initState() {
+    super.initState();
     style1 = 'Flash';
     style2 = 'On Sight';
     tagTextController = TextEditingController();
