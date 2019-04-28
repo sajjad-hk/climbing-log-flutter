@@ -17,8 +17,8 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
+    return
+      Container(
         alignment: Alignment(0.0, 0.0),
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -60,7 +60,6 @@ class Login extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 }

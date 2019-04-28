@@ -61,15 +61,18 @@ class _GradeState extends State<Grade> {
   String type = 'French';
   List<String> gradeSet;
   double _ang;
+  bool editing;
   GlobalKey _keyRed = GlobalKey();
   FocusNode focusNode = FocusNode();
-
+  final textController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     gradeSet = FR_SET;
     _ang = 0;
+    textController.text =
+        gradeSet[initGradeObj(wrapRadianTo2pi(_ang)).floor()].toString();
   }
 
   initGradeObj(selectedSng) {
@@ -88,6 +91,8 @@ class _GradeState extends State<Grade> {
                   details.globalPosition.dx - (center.dx + width / 2)) +
               pi / 2;
         });
+        textController.text =
+            gradeSet[initGradeObj(wrapRadianTo2pi(_ang)).floor()].toString();
       },
       child: Container(
         width: 40,
@@ -126,124 +131,193 @@ class _GradeState extends State<Grade> {
   }
 
   _buildGradeModal(BuildContext context) {
-    final textController = TextEditingController(text: gradeSet[initGradeObj(wrapRadianTo2pi(_ang)).floor()]);
     return Column(
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(top: 30.0, bottom: 55.0),
-          child: Text(
-            'Scale and Grade',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 28.0,
-              shadows: <Shadow>[
-                Shadow(
-                  offset: Offset(1.0, 2.0),
-                  blurRadius: 3.0,
-                  color: Color(0xff29000000),
+        Visibility(
+          visible: MediaQuery.of(context).viewInsets.bottom == 0.0,
+          child: Expanded(
+            flex: 2,
+            child: Center(
+              child: Text(
+                'Scale and Grade',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 28.0,
+                  shadows: <Shadow>[
+                    Shadow(
+                      offset: Offset(1.0, 2.0),
+                      blurRadius: 3.0,
+                      color: Color(0xff29000000),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ToggleRadio.columnStyle(
-                label: 'French',
-                value: 'French',
-                height: 42.0,
-                width: 110,
-                groupValue: type,
-                onChanged: (String val) {
-                  setState(() {
-                    type = val;
-                    gradeSet = FR_SET;
-                  });
-                },
+        Visibility(
+          visible: MediaQuery.of(context).viewInsets.bottom == 0.0,
+          child: Expanded(
+            flex: 1,
+            child: Container(
+              padding: const EdgeInsets.only(left: 15, right: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ToggleRadio.columnStyle(
+                        label: 'French',
+                        value: 'French',
+                        groupValue: type,
+                        onChanged: (String val) {
+                          setState(() {
+                            type = val;
+                            gradeSet = FR_SET;
+                          });
+                          textController.text = gradeSet[
+                                  initGradeObj(wrapRadianTo2pi(_ang)).floor()]
+                              .toString();
+                        },
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ToggleRadio.columnStyle(
+                        label: 'Polish',
+                        value: 'Polish',
+                        groupValue: type,
+                        onChanged: (String val) {
+                          setState(() {
+                            type = val;
+                            gradeSet = PL_SET;
+                          });
+                          textController.text = gradeSet[
+                                  initGradeObj(wrapRadianTo2pi(_ang)).floor()]
+                              .toString();
+                        },
+                      ),
+                    ),
+                  )
+                ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ToggleRadio.columnStyle(
-                label: 'Polish',
-                value: 'Polish',
-                groupValue: type,
-                height: 42.0,
-                width: 110.0,
-                onChanged: (String val) {
-                  setState(() {
-                    type = val;
-                    gradeSet = PL_SET;
-                  });
-                },
-              ),
-            ),
-          ],
+          ),
         ),
-        Container(
-          key: _keyRed,
-          padding:
-              const EdgeInsets.only(top: 30.0, bottom: 30, left: 30, right: 30),
-          child: Stack(
-            alignment: Alignment.center,
-            children: <Widget>[
-              Center(
-                child: InkWell(
-                  onTap: () {
-                    FocusScope.of(context).requestFocus(focusNode);
-                    FocusScope.of(context).reparentIfNeeded(focusNode);
-                  },
-                  child: EditableText(
-                    controller: textController,
-                    focusNode: focusNode,
-                    cursorColor: Colors.white,
-                    backgroundCursorColor: Colors.transparent,
-                    textAlign: TextAlign.center,
-                    keyboardType: TextInputType.text,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 40,
-                      shadows: <Shadow>[
-                        Shadow(
-                          offset: Offset(1.0, 2.0),
-                          blurRadius: 3.0,
-                          color: Color(0xff29000000),
+        Expanded(
+          flex: 5,
+          child: Container(
+            key: _keyRed,
+            padding: const EdgeInsets.all(20),
+            child: Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                AspectRatio(
+                  aspectRatio: 1,
+                  child: Transform.rotate(
+                    angle: _ang,
+                    child: Stack(
+                      alignment: Alignment.topCenter,
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: Color(0xff2e707070),
+                              width: 8.0,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          child: _createKnob(_keyRed.currentContext),
                         ),
                       ],
                     ),
                   ),
                 ),
-              ),
-              AspectRatio(
-                aspectRatio: 1,
-                child: Transform.rotate(
-                  angle: _ang,
-                  child: Stack(
-                    alignment: Alignment.topCenter,
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.all(15),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: Color(0xff2e707070),
-                            width: 8.0,
-                          ),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            _ang = _ang - (2 * pi) / gradeSet.length;
+                          });
+                          textController.text = gradeSet[
+                                  initGradeObj(wrapRadianTo2pi(_ang)).floor()]
+                              .toString();
+                        },
+                        child: Icon(
+                          Icons.minimize,
+                          color: Colors.white,
+                          size: 40,
                         ),
                       ),
-                      Positioned(
-                        child: _createKnob(_keyRed.currentContext),
+                      Container(
+                        width: 100,// Todo dynamic sizing
+                        height: 70,
+                        child: TextField(
+                          onSubmitted: (String val) {
+                            int i = gradeSet.indexOf(val);
+                            if (i >= 0) {
+                              setState(() {
+                                _ang = (2 * pi) / gradeSet.length * i;
+                              });
+                            } else {
+                              print('Invalid Input');
+                            }
+                          },
+                          keyboardType: TextInputType.text,
+                          textDirection: TextDirection.ltr,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 40,
+                            decoration: TextDecoration.none,
+                            shadows: <Shadow>[
+                              Shadow(
+                                offset: Offset(1.0, 2.0),
+                                blurRadius: 3.0,
+                                color: Color(0xff29000000),
+                              ),
+                            ],
+                          ),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                          ),
+                          controller: textController,
+                          textAlign: TextAlign.center,
+                          cursorColor: Colors.white,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            _ang = _ang + (2 * pi) / gradeSet.length;
+                          });
+                          textController.text = gradeSet[
+                                  initGradeObj(wrapRadianTo2pi(_ang)).floor()]
+                              .toString();
+                        },
+                        child: Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: 40,
+                        ),
                       )
                     ],
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        )
+        ),
       ],
     );
   }
@@ -260,72 +334,6 @@ class _GradeState extends State<Grade> {
 
   @override
   Widget build(BuildContext context) {
-   
-    
     return _buildGradeModal(context);
   }
-}
-
-class KnobPainter extends CustomPainter {
-  Paint _paint = Paint()..color = Colors.white;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    canvas.drawCircle(Offset(size.width / 2, 20), 20.0, _paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return false;
-  }
-}
-
-_createControle() {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    children: <Widget>[
-      Text(
-        '+',
-        style: TextStyle(
-          color: Color(0xff4c000000),
-          fontSize: 60,
-          shadows: <Shadow>[
-            Shadow(
-              offset: Offset(1.0, 2.0),
-              blurRadius: 3.0,
-              color: Color(0xff29000000),
-            ),
-          ],
-        ),
-      ),
-      Text(
-        '6a+',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 40,
-          shadows: <Shadow>[
-            Shadow(
-              offset: Offset(1.0, 2.0),
-              blurRadius: 3.0,
-              color: Color(0xff29000000),
-            ),
-          ],
-        ),
-      ),
-      Text(
-        '-',
-        style: TextStyle(
-          color: Color(0xff4c000000),
-          fontSize: 100,
-          shadows: <Shadow>[
-            Shadow(
-              offset: Offset(1.0, 2.0),
-              blurRadius: 3.0,
-              color: Color(0xff29000000),
-            ),
-          ],
-        ),
-      ),
-    ],
-  );
 }

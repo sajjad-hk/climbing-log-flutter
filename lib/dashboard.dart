@@ -65,7 +65,6 @@ class DashboardState extends State<Dashboard> {
                     onPressed: () => Scaffold.of(context).openDrawer(),
                   ),
             ),
-
             backgroundColor: Color(0xFF000000),
             actions: <Widget>[
               IconButton(
@@ -112,7 +111,7 @@ class DashboardState extends State<Dashboard> {
             // Make the initial height of the SliverAppBar larger than normal
             expandedHeight: 300,
           ),
-          RouteLogs2(
+          RouteLogs(
             routes: List<RouteLog>.generate(
               100,
               (i) => i % 6 == 0

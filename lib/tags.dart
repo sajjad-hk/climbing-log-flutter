@@ -14,7 +14,6 @@ class _TagsState extends State<Tags> {
   static TextEditingController tagTextController;
   static List<Widget> tags;
 
-
   @override
   void initState() {
     super.initState();
@@ -59,7 +58,10 @@ class _TagsState extends State<Tags> {
                 child: Row(
                   children: <Widget>[
                     Container(
-                      padding: const EdgeInsets.only(left: 20.0, bottom: 5.0),
+                      padding: const EdgeInsets.only(
+                        left: 20.0,
+                        bottom: 5.0,
+                      ),
                       child: Text(
                         'Style',
                         style: TextStyle(
@@ -184,7 +186,10 @@ class _TagsState extends State<Tags> {
               Row(
                 children: <Widget>[
                   Container(
-                    padding: const EdgeInsets.only(left: 20.0, bottom: 5.0),
+                    padding: const EdgeInsets.only(
+                      left: 20.0,
+                      bottom: 5.0,
+                    ),
                     child: Text(
                       'Other',
                       style: TextStyle(
@@ -268,22 +273,24 @@ class _TagsState extends State<Tags> {
                 ),
               ),
               Expanded(
-                flex: 2,
-                child: InkWell(
-                  onTap: () {
-                    // Save the route
-                    // Go back to first tab
-                  },
-                  child: Container(
-                    child: Center(
-                      child: Text(
-                        '+ LOG ANOTHER ROUTE',
-                        style: TextStyle(color: Color(0xff4c000000), fontSize: 18),
+                  flex: 2,
+                  child: InkWell(
+                    onTap: () {
+                      // Save the route
+                      // Go back to first tab
+                    },
+                    child: Container(
+                      child: Center(
+                        child: Text(
+                          '+ LOG ANOTHER ROUTE',
+                          style: TextStyle(
+                            color: Color(0xff4c000000),
+                            fontSize: 18,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                )
-              ),
+                  )),
             ],
           ),
         ),

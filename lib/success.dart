@@ -16,52 +16,93 @@ class SuccessState extends State<Success> {
   _buildSuccessModal() {
     return Column(
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(top: 90.0, bottom: 92.0),
-          child: Text(
-            'Succeded?',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 28.0,
-              shadows: <Shadow>[
-                Shadow(
-                  offset: Offset(1.0, 2.0),
-                  blurRadius: 3.0,
-                  color: Color(0xff29000000),
-                ),
-              ],
+        Expanded(
+          flex: 2,
+          child: Center(
+            child: Text(
+              'Succeded?',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 28.0,
+                shadows: <Shadow>[
+                  Shadow(
+                    offset: Offset(1.0, 2.0),
+                    blurRadius: 3.0,
+                    color: Color(0xff29000000),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 50.0),
-          child: ToggleRadio.columnStyle(
-            label: 'Yes',
-            value: 'Yes',
-            groupValue: mode,
-            height: 110.0,
-            width: 140.0,
-            icon: Icons.tag_faces,
-            onChanged: (String val) {
-              setState(() {
-                mode = val;
-              });
-            },
+        Expanded(
+          flex: 4,
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: ToggleRadio.columnStyle(
+                          label: 'Yes',
+                          value: 'Yes',
+                          groupValue: mode,
+                          icon: Icons.tag_faces,
+                          onChanged: (String val) {
+                            setState(() {
+                              mode = val;
+                            });
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: ToggleRadio.columnStyle(
+                          label: 'No',
+                          value: 'No',
+                          groupValue: mode,
+                          icon: Icons.tag_faces,
+                          onChanged: (String val) {
+                            setState(() {
+                              mode = val;
+                            });
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: Container(),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Container(),
+              )
+            ],
           ),
         ),
-        ToggleRadio.columnStyle(
-          label: 'No',
-          value: 'No',
-          groupValue: mode,
-          height: 110.0,
-          width: 140.0,
-          icon: Icons.tag_faces,
-          onChanged: (String val) {
-            setState(() {
-              mode = val;
-            });
-          },
-        )
       ],
     );
   }

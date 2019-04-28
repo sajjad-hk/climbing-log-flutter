@@ -68,8 +68,6 @@ class ToggleRadio extends StatelessWidget {
   final String value;
   final String groupValue;
   final ValueChanged<String> onChanged;
-  final double height;
-  final double width;
   final IconData icon;
   final String label;
   final String viewStyle;
@@ -79,8 +77,6 @@ class ToggleRadio extends StatelessWidget {
     @required this.value,
     @required this.groupValue,
     @required this.onChanged,
-    @required this.height,
-    @required this.width,
     @required this.label,
     this.icon,
   })  : viewStyle = 'ROW',
@@ -91,8 +87,6 @@ class ToggleRadio extends StatelessWidget {
     @required this.value,
     @required this.groupValue,
     @required this.onChanged,
-    @required this.height,
-    @required this.width,
     @required this.label,
     this.icon,
   })  : viewStyle = 'COLUMN',
@@ -161,8 +155,6 @@ class ToggleRadio extends StatelessWidget {
       groupValue: groupValue,
       onChanged: onChanged,
       checked: Container(
-        height: height,
-        width: width,
         decoration: BoxDecoration(
           color: Color(0x4d000000),
           borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -172,8 +164,6 @@ class ToggleRadio extends StatelessWidget {
         ),
       ),
       notChecked: Container(
-        height: height,
-        width: width,
         child: Center(
           child: _buildView(viewStyle, false),
         ),
